@@ -1,7 +1,10 @@
 // controllers/authController.js
 const jwt = require('jsonwebtoken');
 const user = require('../models/user');
-const secretKey = '1234'; // Replace with a secure secret key
+const crypto = require('crypto');
+
+// Generate a random secret key and store it securely
+const secretKey = "password";
 
 exports.login = (req, res) => {
   const { username, password } = req.body;

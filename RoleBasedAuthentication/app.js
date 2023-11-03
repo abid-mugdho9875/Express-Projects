@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // JWT Configuration
 const ExtractJwt = passportJWT.ExtractJwt;
 const JwtStrategy = passportJWT.Strategy;
-const secretKey = '1234'; // Replace with a secure secret key
+const secretKey = 'password'; // Replace with a secure secret key
 
 passport.use(new JwtStrategy({
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
