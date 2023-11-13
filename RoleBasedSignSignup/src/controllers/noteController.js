@@ -53,20 +53,59 @@ const deleteNote = async (req, res) => {
     }
 }
 
-const getNotes = async (req, res) => {
+const getAllNotes = async (req, res) => {
     try {
-        const notes = await noteModel.find({ userId: req.userId });
+        const notes = await noteModel.find({});
         res.status(200).json(notes);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Failed to retrieve notes' });
     }
 }
+const deleteAllNotes = async (req, res) => {
+    try {
+        await noteModel.deleteMany({ userId: req.userId });
+
+        res.status(200).json({ message: 'All notes have been deleted' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Something went wrong' });
+    }
+}
+const updateAllNotes = async (req, res) => {
+    const { title, description } = req.body;
+
+    try {
+        await noteModel.updateMany({ userId: req.userId }, { title, description });
+
+        res.status(200).json({ message: 'All notes have been updated' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Something went wrong' });
+    }
+}
+const getMyNotes = async (req, res) => {
+    const userId = req.userId;
+  
+    try {
+      // Fetch notes from the database based on the user's ID
+      const notes = await noteModel.find({ userId: userId });
+  
+      res.status(200).json(notes);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Failed to retrieve user\'s notes' });
+    }
+  };
+
 
 
 module.exports = {
     createNote,
     updateNote,
     deleteNote,
-    getNotes
+    getAllNotes,
+    deleteAllNotes,
+    updateAllNotes,
+    getMyNotes
 }

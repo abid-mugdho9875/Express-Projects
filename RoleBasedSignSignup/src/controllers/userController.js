@@ -8,7 +8,7 @@ const signup = async(req, res) =>{
     //hashed password
     //user creations
     //Token Generate
-    const {username,password, email} = req.body;
+    const {username,password, email, role} = req.body;
     try {
         const existingUser = await userModel.findOne({email:email})
         if(existingUser){
@@ -18,9 +18,10 @@ const signup = async(req, res) =>{
         const result = await  userModel.create({
             email:email,
             password:hashedPassword,
-            username:username
+            username:username,
+            role: role
         })
-        const token = jwt.sign({email:result.email,id:result._id},SECRETKEY)
+        const token = jwt.sign({role:result.role,id:result._id},SECRETKEY)
         res.status(201).json({user:result, token:token});
 
     } catch (error) {
@@ -40,7 +41,7 @@ const signin = async (req, res) =>{
             return res.status(400).json({message:'Invalid credentials'})
         }
        
-        const token = jwt.sign({email:existingUser.email,id:existingUser._id},SECRETKEY)
+        const token = jwt.sign({email:existingUser.role,id:existingUser._id},SECRETKEY)
         res.status(201).json({user:existingUser, token:token});
 
     } catch (error) {
